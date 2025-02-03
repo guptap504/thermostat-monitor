@@ -44,7 +44,7 @@ export default function Home() {
             {error ? <ErrorComponent error={error} /> : null}
             {data ? (
                 editing ? (
-                    <ThermostatEditingComponent data={data} setEditing={setEditing} />
+                    <ThermostatEditingComponent data={data} setEditing={setEditing} info={info} />
                 ) : (
                     <ThermostatDataComponent data={data} setEditing={setEditing} info={info} />
                 )

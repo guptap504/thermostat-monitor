@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import type { EditableSettings, ThermostatData } from "@/types/thermostat"
+import type { EditableSettings, ThermostatData, ThermostatInfo } from "@/types/thermostat"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -31,8 +31,12 @@ const formSchema = z.object({
     fanStatus: z.enum(["low", "mid", "high", "auto_low", "auto_mid", "auto_high", "auto_stop"]),
 })
 
-export function ThermostatEditingComponent(props: { data: ThermostatData; setEditing: (editing: boolean) => void }) {
-    const { data, setEditing } = props
+export function ThermostatEditingComponent(props: {
+    data: ThermostatData
+    setEditing: (editing: boolean) => void
+    info: ThermostatInfo
+}) {
+    const { data, setEditing, info } = props
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -64,7 +68,10 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row justify-between">
-                        <span className="text-4xl text-gray-900">Thermostat</span>
+                        <div className="flex flex-col">
+                            <span className="text-4xl text-gray-900">Thermostat</span>
+                            <span className="text-xs text-gray-400">{info.serialNumber}</span>
+                        </div>
                         <Button disabled variant="outline">
                             Editing
                         </Button>
@@ -84,7 +91,7 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
                                 <FormItem>
                                     <div className="flex flex-row justify-between">
                                         <FormLabel>
-                                            <span className="text-lg text-gray-600">Set Point (°C)</span>
+                                            <span className="text-base text-gray-500">Set Point (°C)</span>
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
@@ -109,7 +116,7 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
                                 <FormItem>
                                     <div className="flex flex-row justify-between">
                                         <FormLabel>
-                                            <span className="text-lg text-gray-600">System Mode</span>
+                                            <span className="text-base text-gray-500">System Mode</span>
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
@@ -142,7 +149,7 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
                                 <FormItem>
                                     <div className="flex flex-row justify-between">
                                         <FormLabel>
-                                            <span className="text-lg text-gray-600">Fan Status</span>
+                                            <span className="text-base text-gray-500">Fan Status</span>
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
@@ -177,7 +184,7 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
                                 <FormItem>
                                     <div className="flex flex-row justify-between">
                                         <FormLabel>
-                                            <span className="text-lg text-gray-600">Lower Limit (°C)</span>
+                                            <span className="text-base text-gray-500">Lower Limit (°C)</span>
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
@@ -201,7 +208,7 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
                                 <FormItem>
                                     <div className="flex flex-row justify-between">
                                         <FormLabel>
-                                            <span className="text-lg text-gray-600">Upper Limit (°C)</span>
+                                            <span className="text-base text-gray-500">Upper Limit (°C)</span>
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
