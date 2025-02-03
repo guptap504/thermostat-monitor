@@ -9,7 +9,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
             authorize: async (credentails) => {
                 const { password } = credentails
-                if (password === env.AUTH_TOKEN) {
+                if (password === env.AUTH_PASSWORD) {
                     return {
                         id: "1",
                         name: "Quadrical",

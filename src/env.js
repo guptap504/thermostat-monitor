@@ -10,6 +10,7 @@ export const env = createEnv({
         BACKEND_URL: z.string().url(),
         AUTH_TOKEN: z.string(),
         AUTH_SECRET: z.string(),
+        AUTH_PASSWORD: z.string(),
         NODE_ENV: z.enum(["development", "test", "production"]),
     },
 
@@ -31,6 +32,7 @@ export const env = createEnv({
         BACKEND_URL: process.env.BACKEND_URL,
         AUTH_TOKEN: process.env.AUTH_TOKEN,
         AUTH_SECRET: process.env.AUTH_SECRET,
+        AUTH_PASSWORD: process.env.AUTH_PASSWORD,
         // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
     },
     /**
