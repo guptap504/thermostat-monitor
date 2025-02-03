@@ -1,34 +1,24 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+"use client"
 
-import type { ThermostatData } from "@/types/thermostat";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "./ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import type { ThermostatData } from "@/types/thermostat"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "./ui/input"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 const formSchema = z.object({
-    setpoint: z.coerce.number().min(5, {
-        message: "Setpoint must be greater than 5",
-    }).max(45, { message: "Setpoint must be less than 45" }),
+    setpoint: z.coerce
+        .number()
+        .min(5, {
+            message: "Setpoint must be greater than 5",
+        })
+        .max(45, { message: "Setpoint must be less than 45" }),
     lowerLimit: z.coerce.number().min(5, {
         message: "Lower limit must be greater than 5",
     }),
@@ -39,8 +29,8 @@ const formSchema = z.object({
     fanStatus: z.enum(["low", "mid", "high", "auto_low", "auto_mid", "auto_high", "auto_stop"]),
 })
 
-export function ThermostatEditing(props: { data: ThermostatData }) {
-    const { data } = props;
+export function ThermostatEditingComponent(props: { data: ThermostatData; setEditing: (editing: boolean) => void }) {
+    const { data, setEditing } = props
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -55,21 +45,23 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        setEditing(false)
         console.log(values)
     }
 
     return (
-        <Card className="px-2 w-96 md:w-80">
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row justify-between">
                         Thermostat
-                        <Button disabled variant="outline">Editing</Button>
-                    </div></CardTitle>
-                <CardDescription>
-                    <div className="flex flex-row justify-between">
-                        Manage your thermostat in one-click.
+                        <Button disabled variant="outline">
+                            Editing
+                        </Button>
                     </div>
+                </CardTitle>
+                <CardDescription>
+                    <div className="flex flex-row justify-between">Manage your thermostat in one-click.</div>
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
@@ -86,7 +78,12 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
-                                                <Input className="w-16" min={data.setPointLowerLimit} max={data.setPointUpperLimit} {...field} />
+                                                <Input
+                                                    className="w-16"
+                                                    min={data.setPointLowerLimit}
+                                                    max={data.setPointUpperLimit}
+                                                    {...field}
+                                                />
                                             </FormControl>
                                         </div>
                                     </div>
@@ -107,7 +104,7 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <SelectTrigger >
+                                                    <SelectTrigger>
                                                         <SelectValue placeholder="Select Mode" />
                                                     </SelectTrigger>
                                                     <SelectContent>
@@ -140,7 +137,7 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <SelectTrigger >
+                                                    <SelectTrigger>
                                                         <SelectValue placeholder="Select Status" />
                                                     </SelectTrigger>
                                                     <SelectContent>
@@ -174,7 +171,12 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
-                                                <Input className="w-16" min={data.setPointLowerLimit} max={data.setPointUpperLimit} {...field} />
+                                                <Input
+                                                    className="w-16"
+                                                    min={data.setPointLowerLimit}
+                                                    max={data.setPointUpperLimit}
+                                                    {...field}
+                                                />
                                             </FormControl>
                                         </div>
                                     </div>
@@ -193,7 +195,12 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
                                         </FormLabel>
                                         <div className="flex flex-row gap-2">
                                             <FormControl>
-                                                <Input className="w-16" min={data.setPointLowerLimit} max={data.setPointUpperLimit} {...field} />
+                                                <Input
+                                                    className="w-16"
+                                                    min={data.setPointLowerLimit}
+                                                    max={data.setPointUpperLimit}
+                                                    {...field}
+                                                />
                                             </FormControl>
                                         </div>
                                     </div>
@@ -202,12 +209,23 @@ export function ThermostatEditing(props: { data: ThermostatData }) {
                             )}
                         />
                         <div className="flex flex-row justify-between gap-2">
-                            <Button type="submit" className="w-full">Save</Button>
-                            <Button variant="outline" className="w-full">Cancel</Button>
+                            <Button type="submit" className="w-full">
+                                Save
+                            </Button>
+                            <Button
+                                variant="outline"
+                                className="w-full"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setEditing(false)
+                                }}
+                            >
+                                Cancel
+                            </Button>
                         </div>
                     </form>
                 </Form>
             </CardContent>
-        </Card >
+        </Card>
     )
 }
