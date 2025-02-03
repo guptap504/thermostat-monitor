@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function retry<T extends (...arg0: any[]) => any>(
     fn: T,
     args: Parameters<T>,
