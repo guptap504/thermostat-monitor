@@ -13,7 +13,9 @@ import { Input } from "./ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 import { setThermostatData } from "@/app/thermostat/actions"
-
+import { useTransition } from "react"
+import { Loader2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 const formSchema = z.object({
     setpoint: z.coerce
         .number()
@@ -37,6 +39,8 @@ export function ThermostatEditingComponent(props: {
     info: ThermostatInfo
 }) {
     const { data, setEditing, info } = props
+    const [isPending, startTransition] = useTransition()
+    const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -49,18 +53,21 @@ export function ThermostatEditingComponent(props: {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        const settings: EditableSettings = {
-            setPointTemp: values.setpoint,
-            systemMode: values.systemMode,
-            fanStatus: values.fanStatus,
-            setPointLowerLimit: values.lowerLimit,
-            setPointUpperLimit: values.upperLimit,
-        }
-        await setThermostatData(settings)
+        startTransition(async () => {
+            const settings: EditableSettings = {
+                setPointTemp: values.setpoint,
+                systemMode: values.systemMode,
+                fanStatus: values.fanStatus,
+                setPointLowerLimit: values.lowerLimit,
+                setPointUpperLimit: values.upperLimit,
+            }
+            await setThermostatData(settings)
+        })
+        toast({
+            title: "Success!",
+            description: "Settings saved successfully",
+        })
         setEditing(false)
-        console.log(values)
     }
 
     return (
@@ -226,9 +233,16 @@ export function ThermostatEditingComponent(props: {
                             )}
                         />
                         <div className="flex flex-row justify-between gap-2">
-                            <Button type="submit" className="w-full">
-                                Save
-                            </Button>
+                            {isPending ? (
+                                <Button disabled>
+                                    <Loader2 className="animate-spin" />
+                                    Please wait
+                                </Button>
+                            ) : (
+                                <Button type="submit" className="w-full">
+                                    Save
+                                </Button>
+                            )}
                             <Button
                                 variant="outline"
                                 className="w-full"
