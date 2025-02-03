@@ -12,6 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "./ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
+import { setThermostatData } from "@/app/actions"
+
 const formSchema = z.object({
     setpoint: z.coerce
         .number()
@@ -42,9 +44,10 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        await setThermostatData(values)
         setEditing(false)
         console.log(values)
     }
