@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import type { ThermostatData } from "@/types/thermostat"
+import type { EditableSettings, ThermostatData } from "@/types/thermostat"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -47,7 +47,14 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
     async function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        await setThermostatData(values)
+        const settings: EditableSettings = {
+            setPointTemp: values.setpoint,
+            systemMode: values.systemMode,
+            fanStatus: values.fanStatus,
+            setPointLowerLimit: values.lowerLimit,
+            setPointUpperLimit: values.upperLimit,
+        }
+        await setThermostatData(settings)
         setEditing(false)
         console.log(values)
     }
