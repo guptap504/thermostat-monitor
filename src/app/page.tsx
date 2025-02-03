@@ -21,7 +21,7 @@ export default function Home() {
                     setData(data)
                     setError(null)
                 } catch (e) {
-                    setError(e)
+                    setError(e as Error)
                 }
             }
             fetchData()
