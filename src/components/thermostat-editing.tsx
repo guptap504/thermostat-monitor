@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "./ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
-import { setThermostatData } from "@/app/actions"
+import { setThermostatData } from "@/app/thermostat/actions"
 
 const formSchema = z.object({
     setpoint: z.coerce

@@ -37,7 +37,12 @@ function getSetPointLimits(limit: number): [number, number] {
     return [lower, upper]
 }
 
-export async function getThermostatData(): Promise<ThermostatData> {
+interface GetThermostatDataResponse {
+    data: ThermostatData | null
+    error?: string
+}
+
+export async function getThermostatData(): Promise<GetThermostatDataResponse> {
     try {
         const response = await retry(
             async () => {
@@ -71,17 +76,22 @@ export async function getThermostatData(): Promise<ThermostatData> {
         const [setPointLowerLimit, setPointUpperLimit] = getSetPointLimits(data[8] ?? 0)
 
         return {
-            temperature,
-            setPointTemp,
-            fanStatus: getFanStatus(fanStatus),
-            powerOn: getPowerOn(powerOn),
-            systemMode: getSystemMode(systemMode),
-            setPointLowerLimit,
-            setPointUpperLimit,
+            data: {
+                temperature,
+                setPointTemp,
+                fanStatus: getFanStatus(fanStatus),
+                powerOn: getPowerOn(powerOn),
+                systemMode: getSystemMode(systemMode),
+                setPointLowerLimit,
+                setPointUpperLimit,
+            },
         }
     } catch (error) {
         // Re-throw with more descriptive message
-        throw new Error(`Failed to fetch thermostat data: ${error instanceof Error ? error.message : "Unknown error"}`)
+        return {
+            data: null,
+            error: `Failed to fetch thermostat data: ${error instanceof Error ? error.message : "Unknown error"}`,
+        }
     }
 }
 
@@ -145,29 +155,34 @@ async function writeToThermostat(register: number, data: number, parameter: stri
         )
     } catch (error) {
         throw new Error(
-            `Failed to update thermostat ${parameter} settings: ${error instanceof Error ? error.message : "Unknown error"}`
+            `Failed to update thermostat ${parameter} settings: ${
+                error instanceof Error ? error.message : "Unknown error"
+            }`
         )
     }
 }
 
 export async function setThermostatData(settings: EditableSettings): Promise<void> {
     const currentData = await getThermostatData()
-    if (settings.setPointTemp !== currentData.setPointTemp) {
+    if (currentData.error) {
+        throw new Error(currentData.error)
+    }
+    if (settings.setPointTemp !== currentData.data?.setPointTemp) {
         const setPointTemp = settings.setPointTemp
         await writeToThermostat(3, setPointTemp, "setPointTemp")
     }
-    if (settings.fanStatus !== currentData.fanStatus) {
+    if (settings.fanStatus !== currentData.data?.fanStatus) {
         const fanStatus = getFanStatusNumber(settings.fanStatus)
         await writeToThermostat(4, fanStatus, "fanStatus")
     }
-    if (settings.systemMode !== currentData.systemMode) {
+    if (settings.systemMode !== currentData.data?.systemMode) {
         const systemMode = getSystemModeNumber(settings.systemMode)
         await writeToThermostat(6, systemMode, "systemMode")
     }
 
     if (
-        settings.setPointLowerLimit !== currentData.setPointLowerLimit ||
-        settings.setPointUpperLimit !== currentData.setPointUpperLimit
+        settings.setPointLowerLimit !== currentData.data?.setPointLowerLimit ||
+        settings.setPointUpperLimit !== currentData.data?.setPointUpperLimit
     ) {
         const setPointLimits = encodeSetPointLimits(settings.setPointLowerLimit, settings.setPointUpperLimit)
         await writeToThermostat(9, setPointLimits, "setPointLimits")
