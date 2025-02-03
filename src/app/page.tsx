@@ -4,16 +4,24 @@ import { ErrorComponent } from "@/components/error"
 import { LoadingComponent } from "@/components/loading"
 import { ThermostatDataComponent } from "@/components/thermostat-data"
 import { ThermostatEditingComponent } from "@/components/thermostat-editing"
-import { ThermostatData } from "@/types/thermostat"
+import { ThermostatData, ThermostatInfo } from "@/types/thermostat"
 import { useEffect, useState } from "react"
-import { getThermostatData } from "./thermostat/actions"
+import { getThermostatData, getThermostatInfo } from "./thermostat/actions"
 // import { useSession } from "next-auth/react"
 
 export default function Home() {
     const [editing, setEditing] = useState(false)
     const [data, setData] = useState<ThermostatData | null>(null)
     const [error, setError] = useState<Error | null>(null)
-    // const { data: session } = useSession()
+    const [info, setInfo] = useState<ThermostatInfo>({ serialNumber: "Unknown" })
+
+    useEffect(() => {
+        const fetchInfo = async () => {
+            const info = await getThermostatInfo()
+            setInfo(info)
+        }
+        fetchInfo()
+    }, [])
 
     useEffect(() => {
         if (!editing) {
@@ -38,7 +46,7 @@ export default function Home() {
                 editing ? (
                     <ThermostatEditingComponent data={data} setEditing={setEditing} />
                 ) : (
-                    <ThermostatDataComponent data={data} setEditing={setEditing} />
+                    <ThermostatDataComponent data={data} setEditing={setEditing} info={info} />
                 )
             ) : (
                 <LoadingComponent />

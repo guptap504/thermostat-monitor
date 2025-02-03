@@ -20,3 +20,7 @@ export interface EditableSettings {
     setPointLowerLimit: number
     setPointUpperLimit: number
 }
+
+export interface ThermostatInfo {
+    serialNumber: string
+}

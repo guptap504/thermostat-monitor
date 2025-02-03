@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import type { ThermostatData, PowerOn, SystemMode, FanStatus } from "@/types/thermostat"
+import type { ThermostatData, PowerOn, SystemMode, FanStatus, ThermostatInfo } from "@/types/thermostat"
 
 function PowerStatus(props: { status: PowerOn }) {
     const { status } = props
@@ -35,14 +35,21 @@ const getFanStatusColor = (status: FanStatus) => {
     return "bg-teal-100 text-teal-800"
 }
 
-export function ThermostatDataComponent(props: { data: ThermostatData; setEditing: (editing: boolean) => void }) {
-    const { data, setEditing } = props
+export function ThermostatDataComponent(props: {
+    data: ThermostatData
+    setEditing: (editing: boolean) => void
+    info: ThermostatInfo
+}) {
+    const { data, setEditing, info } = props
     return (
         <Card className="w-full">
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row justify-between">
-                        Thermostat
+                        <div className="flex flex-col">
+                            <span className="text-4xl text-gray-900">Thermostat</span>
+                            <span className="text-xs text-gray-400">{info.serialNumber}</span>
+                        </div>
                         <Button onClick={() => setEditing(true)}>Edit</Button>
                     </div>
                 </CardTitle>

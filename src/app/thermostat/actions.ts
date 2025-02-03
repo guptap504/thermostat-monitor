@@ -2,7 +2,14 @@
 
 import { env } from "@/env"
 import { retry } from "@/lib/retry"
-import type { EditableSettings, FanStatus, PowerOn, SystemMode, ThermostatData } from "@/types/thermostat"
+import type {
+    EditableSettings,
+    FanStatus,
+    PowerOn,
+    SystemMode,
+    ThermostatData,
+    ThermostatInfo,
+} from "@/types/thermostat"
 
 function getFanStatus(fanStatus: number): FanStatus {
     if (fanStatus === 1) return "low"
@@ -92,6 +99,45 @@ export async function getThermostatData(): Promise<GetThermostatDataResponse> {
             data: null,
             error: `Failed to fetch thermostat data: ${error instanceof Error ? error.message : "Unknown error"}`,
         }
+    }
+}
+
+export async function getThermostatInfo(): Promise<ThermostatInfo> {
+    let response: Response | null = null
+    try {
+        response = await retry(
+            async () => {
+                const response = await fetch(`${env.BACKEND_URL}/info`, {
+                    headers: {
+                        Authorization: `IHLWjIyX5Zeo5uA`,
+                    },
+                })
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`)
+                }
+                return response
+            },
+            [],
+            3
+        )
+    } catch {
+        return {
+            serialNumber: "Unknown",
+        }
+    }
+    if (!response) {
+        return {
+            serialNumber: "Unknown",
+        }
+    }
+    const data: { serial_number: string } | null = await response.json()
+    if (!data) {
+        return {
+            serialNumber: "Unknown",
+        }
+    }
+    return {
+        serialNumber: data.serial_number,
     }
 }
 

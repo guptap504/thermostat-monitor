@@ -64,7 +64,7 @@ export function ThermostatEditingComponent(props: { data: ThermostatData; setEdi
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row justify-between">
-                        Thermostat
+                        <span className="text-4xl text-gray-900">Thermostat</span>
                         <Button disabled variant="outline">
                             Editing
                         </Button>
