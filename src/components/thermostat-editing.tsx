@@ -69,8 +69,8 @@ export function ThermostatEditingComponent(props: {
                     description: "Settings saved successfully",
                 })
             }, 1000)
+            setEditing(false)
         })
-        setEditing(false)
     }
 
     return (
