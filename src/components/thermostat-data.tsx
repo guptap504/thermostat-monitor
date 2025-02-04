@@ -18,7 +18,6 @@ function PowerStatus(props: { status: PowerOn }) {
 const getSystemModeColor = (mode: SystemMode) => {
     switch (mode) {
         case "cool":
-        case "auto_cool":
             return "bg-blue-100 text-blue-800"
         case "heat":
         case "auto_heat":
