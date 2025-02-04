@@ -53,7 +53,7 @@ export async function getThermostatData(): Promise<GetThermostatDataResponse> {
     try {
         const response = await retry(
             async () => {
-                const response = await fetch(`${env.BACKEND_URL}/read`, {
+                const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/read`, {
                     headers: {
                         Authorization: `${env.AUTH_TOKEN}`,
                     },
@@ -107,7 +107,7 @@ export async function getThermostatInfo(): Promise<ThermostatInfo> {
     try {
         response = await retry(
             async () => {
-                const response = await fetch(`${env.BACKEND_URL}/info`, {
+                const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/info`, {
                     headers: {
                         Authorization: `IHLWjIyX5Zeo5uA`,
                     },
@@ -183,7 +183,7 @@ async function writeToThermostat(register: number, data: number, parameter: stri
     try {
         await retry(
             async () => {
-                const response = await fetch(`${env.BACKEND_URL}/set/${register}`, {
+                const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/set/${register}`, {
                     method: "PUT",
                     headers: {
                         Authorization: `${env.AUTH_TOKEN}`,
