@@ -94,10 +94,10 @@ export async function getThermostatData(): Promise<GetThermostatDataResponse> {
             },
         }
     } catch (error) {
-        // Re-throw with more descriptive message
+        console.error(error)
         return {
             data: null,
-            error: `Failed to fetch thermostat data: ${error instanceof Error ? error.message : "Unknown error"}`,
+            error: `Device is offline`,
         }
     }
 }
