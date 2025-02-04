@@ -6,7 +6,7 @@ import { z } from "zod"
 import { OTPInputContext } from "input-otp"
 import { useContext } from "react"
 
-import { authenticate } from "@/app/auth/actions"
+import { authenticate } from "@/app/login/actions"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { InputOTP, InputOTPGroup } from "@/components/ui/input-otp"

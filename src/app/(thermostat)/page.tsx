@@ -6,8 +6,7 @@ import { ThermostatDataComponent } from "@/components/thermostat-data"
 import { ThermostatEditingComponent } from "@/components/thermostat-editing"
 import { ThermostatData, ThermostatInfo } from "@/types/thermostat"
 import { useEffect, useState } from "react"
-import { getThermostatData, getThermostatInfo } from "./thermostat/actions"
-// import { useSession } from "next-auth/react"
+import { getThermostatData, getThermostatInfo } from "./actions"
 
 export default function Home() {
     const [editing, setEditing] = useState(false)

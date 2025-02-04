@@ -9,13 +9,14 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "./ui/input"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-import { setThermostatData } from "@/app/thermostat/actions"
-import { useTransition } from "react"
-import { Loader2 } from "lucide-react"
+import { setThermostatData } from "@/app/(thermostat)/actions"
 import { useToast } from "@/hooks/use-toast"
+import { Loader2 } from "lucide-react"
+import { useTransition } from "react"
+
 const formSchema = z.object({
     setpoint: z.coerce
         .number()
@@ -62,10 +63,12 @@ export function ThermostatEditingComponent(props: {
                 setPointUpperLimit: values.upperLimit,
             }
             await setThermostatData(settings)
-        })
-        toast({
-            title: "Success!",
-            description: "Settings saved successfully",
+            setTimeout(() => {
+                toast({
+                    title: "Success!",
+                    description: "Settings saved successfully",
+                })
+            }, 1000)
         })
         setEditing(false)
     }
@@ -246,6 +249,7 @@ export function ThermostatEditingComponent(props: {
                             <Button
                                 variant="outline"
                                 className="w-full"
+                                disabled={isPending}
                                 onClick={(e) => {
                                     e.preventDefault()
                                     setEditing(false)

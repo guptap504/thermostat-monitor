@@ -1,7 +1,7 @@
 "use server"
 
-import { signIn } from "@/auth"
 import { AuthError } from "next-auth"
+import { signIn } from "@/auth"
 
 export async function authenticate(pin: string) {
     try {
@@ -9,7 +9,7 @@ export async function authenticate(pin: string) {
             password: pin,
             redirect: false, // Disable automatic redirect
         })
-        return { success: true }
+        return { success: true, error: null }
     } catch (error) {
         if (error instanceof AuthError) {
             return { success: false, error: "Invalid credentials" }
