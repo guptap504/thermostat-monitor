@@ -15,11 +15,8 @@ function getFanStatus(fanStatus: number): FanStatus {
     if (fanStatus === 1) return "low"
     if (fanStatus === 2) return "mid"
     if (fanStatus === 3) return "high"
-    if (fanStatus === 4) return "auto_low"
-    if (fanStatus === 5) return "auto_mid"
     if (fanStatus === 6) return "auto_high"
-    if (fanStatus === 7) return "auto_stop"
-    return "auto_stop"
+    return "auto_high"
 }
 
 function getPowerOn(powerOn: number): PowerOn {
@@ -33,9 +30,8 @@ function getSystemMode(systemMode: number): SystemMode {
     if (systemMode === 1) return "cool"
     if (systemMode === 2) return "heat"
     if (systemMode === 3) return "ventilation"
-    if (systemMode === 4) return "auto_cool"
     if (systemMode === 5) return "auto_heat"
-    return "auto_cool"
+    return "auto_heat"
 }
 
 function getSetPointLimits(limit: number): [number, number] {
@@ -149,14 +145,8 @@ function getFanStatusNumber(status: FanStatus): number {
             return 2
         case "high":
             return 3
-        case "auto_low":
-            return 4
-        case "auto_mid":
-            return 5
         case "auto_high":
             return 6
-        case "auto_stop":
-            return 7
     }
 }
 
@@ -168,8 +158,6 @@ function getSystemModeNumber(mode: SystemMode): number {
             return 2
         case "ventilation":
             return 3
-        case "auto_cool":
-            return 4
         case "auto_heat":
             return 5
     }

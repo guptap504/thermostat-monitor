@@ -1,5 +1,5 @@
-export type FanStatus = "low" | "mid" | "high" | "auto_low" | "auto_mid" | "auto_high" | "auto_stop"
-export type SystemMode = "cool" | "heat" | "ventilation" | "auto_cool" | "auto_heat"
+export type FanStatus = "low" | "mid" | "high" | "auto_high"
+export type SystemMode = "cool" | "heat" | "ventilation" | "auto_heat"
 
 export type PowerOn = "off" | "on" | "previous"
 
