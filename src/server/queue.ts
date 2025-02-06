@@ -52,6 +52,7 @@ class RequestQueue {
                     "Content-Type": "application/json",
                 },
                 body: body,
+                signal: AbortSignal.timeout(10000),
             })
 
             const responseData = await backendResponse.json()
