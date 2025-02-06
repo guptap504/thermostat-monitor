@@ -43,27 +43,20 @@ class RequestQueue {
         }
 
         try {
-            // Forward headers from the original request
-            const headersList = await headers()
-            const headersObject: Record<string, string> = {}
-            headersList.forEach((value, key) => {
-                headersObject[key] = value
-            })
-
             const body = request.method !== "GET" ? await request.text() : undefined
             const path = url.pathname.replace("/api/proxy", "")
-            // Proxy the request to your backend API
 
             const backendResponse = await fetch(env.BACKEND_URL + path, {
                 method: request.method,
                 headers: {
-                    Authorization: headersObject["Authorization"],
+                    Authorization: "Bearer " + env.AUTH_TOKEN,
                     "Content-Type": "application/json",
                 },
                 body: body,
             })
 
             const responseData = await backendResponse.json()
+            console.log("Response data:", responseData)
 
             // Cache GET requests
             if (request.method === "GET") {
