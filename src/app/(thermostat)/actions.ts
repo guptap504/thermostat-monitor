@@ -164,7 +164,7 @@ async function writeToThermostat(register: number, data: number, parameter: stri
         await retry(
             async () => {
                 const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/set/${register}`, {
-                    method: "PUT",
+                    method: "POST",
                     body: JSON.stringify({ value: data }),
                 })
                 if (!response.ok) {
