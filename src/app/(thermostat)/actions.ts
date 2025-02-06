@@ -51,7 +51,7 @@ export async function getThermostatData(): Promise<GetThermostatDataResponse> {
             async () => {
                 const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/read`, {
                     headers: {
-                        Authorization: `${env.AUTH_TOKEN}`,
+                        Authorization: `Authorization: Bearer ${env.AUTH_TOKEN}`,
                     },
                 })
                 if (!response.ok) {
@@ -105,7 +105,7 @@ export async function getThermostatInfo(): Promise<ThermostatInfo> {
             async () => {
                 const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/info`, {
                     headers: {
-                        Authorization: `IHLWjIyX5Zeo5uA`,
+                        Authorization: `Authorization: Bearer ${env.AUTH_TOKEN}`,
                     },
                 })
                 if (!response.ok) {
@@ -174,7 +174,7 @@ async function writeToThermostat(register: number, data: number, parameter: stri
                 const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/proxy/set/${register}`, {
                     method: "PUT",
                     headers: {
-                        Authorization: `${env.AUTH_TOKEN}`,
+                        Authorization: `Authorization: Bearer ${env.AUTH_TOKEN}`,
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ value: data }),
