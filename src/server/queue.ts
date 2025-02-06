@@ -55,7 +55,6 @@ class RequestQueue {
             })
 
             const responseData = await backendResponse.json()
-            console.log("Response data:", responseData)
 
             // Cache GET requests
             if (request.method === "GET") {
