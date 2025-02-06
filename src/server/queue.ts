@@ -57,7 +57,7 @@ class RequestQueue {
             const backendResponse = await fetch(env.BACKEND_URL + path, {
                 method: request.method,
                 headers: {
-                    Authorization: headersObject["authorization"],
+                    Authorization: headersObject["Authorization"],
                     "Content-Type": "application/json",
                 },
                 body: body,
