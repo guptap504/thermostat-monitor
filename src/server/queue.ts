@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server"
-import { headers } from "next/headers"
 import { env } from "@/env"
 
 class RequestQueue {
